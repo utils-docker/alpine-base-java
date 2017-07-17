@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 MAINTAINER Fábio Luciano <fabioluciano@php.net>
-LABEL Description="Alpine Base for Java Development"
+LABEL Description="Alpine Base for Java Environment"
 
 ARG timezone
 ENV timezone ${timezone:-"America/Sao_Paulo"}
@@ -18,8 +18,8 @@ RUN apk --update --no-cache add supervisor curl tzdata sudo tar \
   && echo ${timezone} > /etc/timezone \
   && printf "${admin_password}\n${admin_password}" | adduser ${admin_username} \
   && echo "${admin_username} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-  && echo -e "[supervisord]\nnodaemon=true\n\n[include]\nfiles = /etc/supervisor.d/*.ini" > /etc/supervisord.conf
-  && apk del tdata && && rm -rf /var/cache/apk/*
+  && echo -e "[supervisord]\nnodaemon=true\n\n[include]\nfiles = /etc/supervisor.d/*.ini" > /etc/supervisord.conf \
+  && apk del tzdata && rm -rf /var/cache/apk/*
 
 WORKDIR /opt/
 
